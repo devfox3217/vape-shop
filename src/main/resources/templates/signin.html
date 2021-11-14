@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="inc/dev :: devFrg"></th:block>
+<th:block th:replace="inc/head :: headFrg"></th:block>
+
+<body class="login-page sidebar-collapse">
+
+<th:block th:replace="inc/nav_tp :: navTpFrg"></th:block>
+
+<div class="page-header header-filter" style="background-image: url('/img/bg7.jpg'); background-size: cover; background-position: top center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+                <div class="card card-login">
+                    <form class="form" method="" action="">
+                        <div class="card-header card-header-danger text-center">
+                            <h4 class="card-title">로그인</h4>
+                        </div>
+                        <a href="#pablo" class="btn btn-link col-12">
+                            <img src="/img/kakao_login.png" style="width: 100%" alt="">
+                        </a>
+                        <p class="description text-center">이메일로 로그인</p>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="material-icons">mail</i></span>
+                                </div>
+                                <input type="email" class="form-control" placeholder="이메일">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="material-icons">lock_outline</i></span>
+                                </div>
+                                <input type="password" class="form-control" placeholder="비밀번호">
+                            </div>
+                            <div class="form-check mb-4 mt-0 pt-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-sign"><span class="check"></span></span>
+                                    로그인 유지
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#pablo" class="col-12 btn btn-danger btn-lg"><b>로그인</b></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="inc/script :: scriptFrg"></th:block>
+
+</body>
+</html>
