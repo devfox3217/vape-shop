@@ -1,10 +1,84 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<nav class="navbar fixed-top navbar-expand-lg bg-dark" th:fragment="navBFrg">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" th:href="@{/}"><b>BBVAPE</b></a>
+            <button class="btn btn-sm btn-danger btn-round shopping-cart" data-toggle="modal" data-target="#cartModal">
+                <i class="material-icons">shopping_cart</i> 0
+            </button>
+            <button type="button" class="navbar-toggler" data-toggle="collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="/liquid.html" class="nav-link">
+                        <i class="material-icons">air</i> 액상
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/devices.html" class="nav-link">
+                        <i class="material-icons">view_carousel</i> 기기
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/etc.html" class="nav-link">
+                        <i class="material-icons">earbuds_battery</i> 기타
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/subs.html" class="nav-link">
+                        <i class="material-icons">schedule</i> 정기배송
+                    </a>
+                </li>
+                <li class="dropdown nav-item">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <i class="material-icons">support_agent</i> 고객센터
+                    </a>
+                    <div class="dropdown-menu dropdown-with-icons">
+                        <a href="/order.html" class="dropdown-item">
+                            주문배송
+                        </a>
+                        <a href="/my.html" class="dropdown-item">
+                            내 계정
+                        </a>
+                        <a href="/question.html" class="dropdown-item">
+                            1:1문의
+                        </a>
+                        <a href="/dev.html" class="dropdown-item">
+                            개발자
+                        </a>
+                        <form method="post" th:action="@{/signout}">
 
-</body>
+                            <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+
+                            <button type="submit" class="dropdown-item">
+                                로그아웃
+                            </button>
+
+                        </form>
+                    </div>
+                </li>
+                <li class="button-container nav-item">
+                    <button class="btn btn-sm btn-danger btn-round btn-block" data-toggle="modal" data-target="#cartModal">
+                        <i class="material-icons">shopping_cart</i> 0
+                    </button>
+                </li>
+                <li class="button-container nav-item">
+                    <a th:href="@{/signin}" target="_blank" class="btn btn-sm btn-rose btn-round btn-block">
+                        <i class="material-icons">login</i> 로그인
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 </html>

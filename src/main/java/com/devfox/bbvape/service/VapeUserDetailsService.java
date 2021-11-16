@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -19,11 +21,12 @@ public class VapeUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        Optional<User> user = userRepository.findByUsername(username);
+        User foundUser = user.orElseThrow(() -> new UsernameNotFoundException(username));
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("없는 유저입니다. username : " + username);
         } else {
-            return user;
+            return foundUser;
         }
 
     }

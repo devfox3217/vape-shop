@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="40" th:fragment="navTpFrg">
     <div class="container">
         <div class="navbar-translate">
-            <a class="navbar-brand" href=""><b>BBVAPE</b></a>
-            <button class="btn btn-sm btn-danger btn-round shopping-cart">
+            <a class="navbar-brand" th:href="@{/}"><b>BBVAPE</b></a>
+            <button class="btn btn-sm btn-danger btn-round shopping-cart" data-toggle="modal" data-target="#cartModal" sec:authorize="isAuthenticated()">
                 <i class="material-icons">shopping_cart</i> 0
             </button>
             <button type="button" class="navbar-toggler" data-toggle="collapse">
@@ -17,7 +20,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="/liquid.html" class="nav-link">
+                    <a th:href="@{/liquid}" class="nav-link">
                         <i class="material-icons">air</i> 액상
                     </a>
                 </li>
@@ -50,18 +53,23 @@
                         <a href="/faq.html" class="dropdown-item">
                             1:1문의
                         </a>
-                        <a href="/logout" class="dropdown-item">
-                            로그아웃
+                        <a href="/admin" class="dropdown-item" sec:authorize="hasRole('ADMIN')">
+                            어드민
                         </a>
+                        <form method="post" th:action="@{/signout}" sec:authorize="isAuthenticated()">
+                            <button type="submit" class="dropdown-item">
+                                로그아웃
+                            </button>
+                        </form>
                     </div>
                 </li>
-                <li class="button-container nav-item">
+                <li class="button-container nav-item" sec:authorize="isAuthenticated()">
                     <button class="btn btn-sm btn-danger btn-round btn-block" data-toggle="modal" data-target="#cartModal">
                         <i class="material-icons">shopping_cart</i> 0
                     </button>
                 </li>
-                <li class="button-container nav-item">
-                    <a href="https://www.creative-tim.com/product/material-kit-pro?ref=presentation" target="_blank" class="btn btn-sm btn-rose btn-round btn-block">
+                <li class="button-container nav-item" sec:authorize="isAnonymous()">
+                    <a th:href="@{/signin}" class="btn btn-sm btn-danger btn-round btn-block">
                         <i class="material-icons">login</i> 로그인
                     </a>
                 </li>

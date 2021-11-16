@@ -34,11 +34,17 @@ public class User implements UserDetails {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "point")
+    private int point;
 
     @Column(name = "role")
     private String role;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "adult")
+    private boolean adult;
 
     @Column(name = "accountnonexpired")
     private boolean accountNonExpired;
@@ -52,8 +58,8 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @Column(name = "point")
-    private int point;
+    @Column(name = "marketing")
+    private boolean marketing;
 
     @Column(name = "regdate")
     private Date regdate;

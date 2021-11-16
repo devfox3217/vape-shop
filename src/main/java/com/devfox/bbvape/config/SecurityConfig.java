@@ -1,5 +1,6 @@
 package com.devfox.bbvape.config;
 
+import com.devfox.bbvape.config.handler.UserDeniedHandler;
 import com.devfox.bbvape.service.VapeUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Slf4j
 @EnableWebSecurity
@@ -25,6 +27,7 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final VapeUserDetailsService vapeUserDetailsService;
+    private final UserDeniedHandler userDeniedHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .formLogin(login ->
                         login
                                 .loginPage("/signin")
@@ -61,9 +66,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         logout
                                 .logoutUrl("/signout")
                                 .logoutSuccessUrl("/signin"))
-                .exceptionHandling(error ->
-                        error.accessDeniedPage("/access-denied")
-                )
+                .exceptionHandling()
+                .accessDeniedHandler(userDeniedHandler)
+                .and()
                 .rememberMe()
                 .key("remember-me-key")
                 .rememberMeParameter("remember-me")
@@ -72,7 +77,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(60 * 60 * 24 * 7 * 30)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/main/**").authenticated()
+                .antMatchers("/signin").permitAll()
+                .antMatchers("/signup").permitAll()
+                .antMatchers("/home").permitAll()
+
+                .antMatchers("/liquid").permitAll()
+                .antMatchers("/device").permitAll()
+                .antMatchers("/etc").permitAll()
+                .antMatchers("/liquid/product").hasRole("USER")
+                .antMatchers("/device/product").hasRole("USER")
+                .antMatchers("/etc/product").hasRole("USER")
+
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/*").permitAll()
         ;
@@ -86,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public RoleHierarchyImpl roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER > ROLE_REGISTER");
         return roleHierarchy;
     }
 
