@@ -1,6 +1,8 @@
 package com.devfox.bbvape.controller;
 
+import com.devfox.bbvape.model.Brand;
 import com.devfox.bbvape.model.Category;
+import com.devfox.bbvape.service.BrandService;
 import com.devfox.bbvape.service.CategoryService;
 import com.devfox.bbvape.service.Code;
 import com.devfox.bbvape.util.PageScriptUtil;
@@ -22,6 +24,10 @@ import java.util.Map;
 public class AdminSettingController {
 
     private final CategoryService categoryService;
+    private final BrandService brandService;
+
+
+    // ******************** 상품 카테고리 페이지 ********************
 
     @PostMapping(value = "/getCategoryRef")
     @ResponseBody
@@ -78,5 +84,26 @@ public class AdminSettingController {
         categoryService.deleteCategory(id);
 
         PageScriptUtil.alertAndMove(response, "삭제가 완료되었습니다.", "/admin/setting/category");
+    }
+
+    // ******************** 제조사 페이지 ********************
+
+    @RequestMapping("/brandInsert")
+    public void brandInsert(
+            HttpServletResponse response,
+            @RequestParam String type,
+            @RequestParam String name,
+            @RequestParam(required = false) int ord
+    ) throws IOException {
+        Brand brand = new Brand();
+
+        brand.setType(type);
+        brand.setOrd(ord);
+        brand.setName(name);
+
+        Code code = brandService.saveBrand(brand);
+
+        PageScriptUtil.alertAndMove(response, code.getMsg(), "/admin/setting/brand");
+
     }
 }
