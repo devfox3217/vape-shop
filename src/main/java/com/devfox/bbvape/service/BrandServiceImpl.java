@@ -40,4 +40,31 @@ public class BrandServiceImpl implements BrandService {
 
         return code;
     }
+
+    @Override
+    public Code updateBrand(Brand brand) {
+        Code code = new Code();
+
+        Brand loadBrand = brandRepository.getById(brand.getId());
+
+        loadBrand.setName(brand.getName());
+        loadBrand.setOrd(brand.getOrd());
+
+        Brand brandCheck = brandRepository.save(loadBrand);
+
+        if (brandCheck != null) {
+            code.setCode(1);
+            code.setMsg(brandCheck.getName() + "이 정상적으로 수정되었습니다.");
+        } else {
+            code.setCode(2);
+            code.setMsg("에러");
+        }
+
+        return code;
+    }
+
+    @Override
+    public void deleteBrand(int id) {
+        brandRepository.deleteById(id);
+    }
 }

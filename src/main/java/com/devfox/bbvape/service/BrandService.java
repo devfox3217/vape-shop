@@ -8,4 +8,8 @@ public interface BrandService {
     List<Brand> getBrands();
 
     Code saveBrand(Brand brand);
+
+    Code updateBrand(Brand brand);
+
+    void deleteBrand(int id);
 }

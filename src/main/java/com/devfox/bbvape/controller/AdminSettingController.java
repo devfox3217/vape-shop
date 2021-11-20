@@ -36,13 +36,20 @@ public class AdminSettingController {
         return categoryList;
     }
 
+    @PostMapping(value = "getCategories")
+    @ResponseBody
+    public List<Category> getCategories() {
+        List<Category> categoryList = categoryService.getCategories();
+        return categoryList;
+    }
+
     @RequestMapping("/categoryInsert")
     public void categoryInsert(
             HttpServletResponse response,
             @RequestParam String type,
             @RequestParam String name,
-            @RequestParam(required = false) int ref,
-            @RequestParam(required = false) int ord
+            @RequestParam(required = false, defaultValue = "0") int ref,
+            @RequestParam(required = false, defaultValue = "0") int ord
     ) throws IOException {
         Category category = new Category();
 
@@ -62,7 +69,7 @@ public class AdminSettingController {
             HttpServletResponse response,
             @RequestParam int id,
             @RequestParam String name,
-            @RequestParam int ord
+            @RequestParam(required = false, defaultValue = "0") int ord
     ) throws IOException {
         Category category = new Category();
 
@@ -93,7 +100,7 @@ public class AdminSettingController {
             HttpServletResponse response,
             @RequestParam String type,
             @RequestParam String name,
-            @RequestParam(required = false) int ord
+            @RequestParam(required = false, defaultValue = "0") int ord
     ) throws IOException {
         Brand brand = new Brand();
 
@@ -105,5 +112,34 @@ public class AdminSettingController {
 
         PageScriptUtil.alertAndMove(response, code.getMsg(), "/admin/setting/brand");
 
+    }
+
+    @RequestMapping("/brandUpdate")
+    public void brandUpdate(
+            HttpServletResponse response,
+            @RequestParam int id,
+            @RequestParam String name,
+            @RequestParam(required = false, defaultValue = "0") int ord
+    ) throws IOException {
+        Brand brand = new Brand();
+
+        brand.setId(id);
+        brand.setName(name);
+        brand.setOrd(ord);
+
+        Code code =  brandService.updateBrand(brand);
+
+        PageScriptUtil.alertAndMove(response, code.getMsg(), "/admin/setting/brand");
+
+    }
+
+    @RequestMapping("/brandDelete")
+    public void brandDelete(
+            HttpServletResponse response,
+            @RequestParam int id
+    ) throws IOException {
+        brandService.deleteBrand(id);
+
+        PageScriptUtil.alertAndMove(response, "삭제가 완료되었습니다.", "/admin/setting/brand");
     }
 }
