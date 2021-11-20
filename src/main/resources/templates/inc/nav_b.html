@@ -7,7 +7,7 @@
     <div class="container">
         <div class="navbar-translate">
             <a class="navbar-brand" th:href="@{/}"><b>BBVAPE</b></a>
-            <button class="btn btn-sm btn-danger btn-round shopping-cart" data-toggle="modal" data-target="#cartModal">
+            <button class="btn btn-sm btn-danger btn-round shopping-cart" data-toggle="modal" data-target="#cartModal" sec:authorize="isAuthenticated()">
                 <i class="material-icons">shopping_cart</i> 0
             </button>
             <button type="button" class="navbar-toggler" data-toggle="collapse">
@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="/liquid.html" class="nav-link">
+                    <a th:href="@{/liquid}" class="nav-link">
                         <i class="material-icons">air</i> 액상
                     </a>
                 </li>
@@ -44,36 +44,32 @@
                         <i class="material-icons">support_agent</i> 고객센터
                     </a>
                     <div class="dropdown-menu dropdown-with-icons">
-                        <a href="/order.html" class="dropdown-item">
+                        <a href="/order/html" class="dropdown-item">
                             주문배송
                         </a>
                         <a href="/my.html" class="dropdown-item">
                             내 계정
                         </a>
-                        <a href="/question.html" class="dropdown-item">
+                        <a href="/faq.html" class="dropdown-item">
                             1:1문의
                         </a>
-                        <a href="/dev.html" class="dropdown-item">
-                            개발자
+                        <a th:href="@{/admin/dashboard}" class="dropdown-item" sec:authorize="hasRole('ADMIN')">
+                            어드민
                         </a>
-                        <form method="post" th:action="@{/signout}">
-
-                            <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
-
+                        <form method="post" th:action="@{/signout}" sec:authorize="isAuthenticated()">
                             <button type="submit" class="dropdown-item">
                                 로그아웃
                             </button>
-
                         </form>
                     </div>
                 </li>
-                <li class="button-container nav-item">
+                <li class="button-container nav-item" sec:authorize="isAuthenticated()">
                     <button class="btn btn-sm btn-danger btn-round btn-block" data-toggle="modal" data-target="#cartModal">
                         <i class="material-icons">shopping_cart</i> 0
                     </button>
                 </li>
-                <li class="button-container nav-item">
-                    <a th:href="@{/signin}" target="_blank" class="btn btn-sm btn-rose btn-round btn-block">
+                <li class="button-container nav-item" sec:authorize="isAnonymous()">
+                    <a th:href="@{/signin}" class="btn btn-sm btn-danger btn-round btn-block">
                         <i class="material-icons">login</i> 로그인
                     </a>
                 </li>

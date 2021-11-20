@@ -15,10 +15,12 @@
 
     <div class="container">
         <div class="row mb-3">
-            <h1 class="mt-2 mb-4">대시보드</h1>
+            <h1 class="mt-2 mb-4">설정</h1>
             <div class="col-12">
                 <div class="btn-group">
-                    <a th:href="@{/admin/}" class="btn btn-primary">상품리스트</a>
+                    <a th:href="@{/admin/setting/site}" class="btn btn-primary active">사이트</a>
+                    <a th:href="@{/admin/setting/category}" class="btn btn-primary">상품 카테고리</a>
+                    <a th:href="@{/admin/setting/brand}" class="btn btn-primary">제조사</a>
                 </div>
             </div>
             <hr class="mt-3">

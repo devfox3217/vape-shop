@@ -1,10 +1,377 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="inc/dev :: devFrg"></th:block>
+<th:block th:replace="inc/head :: headFrg"></th:block>
+
 <body>
+
+<th:block th:replace="inc/nav_b :: navBFrg"></th:block>
+
+<div class="main main-raised" style="margin-top: 6rem !important;">
+    <!--본문 섹션 1-->
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-5 col-xl-4 ml-auto">
+                    <img src="./assets/img/examples/thumb/4.jpg" alt="Raised Image" class="img-raised rounded img-fluid">
+                </div>
+                <div class="col-md-6 col-lg-5 col-xl-4 mr-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="product-company">NASTY</h3>
+                        </div>
+                        <div class="col-6 rating-star">
+                            <div class="rating-container">
+                                <div class="product-rating">
+                                    <span class="rating" style="width:94%"></span>
+                                </div>
+                                <b>4.7</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h2 class="product-name">슬로우 블로우</h2>
+                        <h4 class="product-spec">입호흡|9.8mg|30ml</h4>
+                        <span class="post-desc"><i class="material-icons">local_shipping</i> &nbsp; <strong>대한통운</strong></span>
+                        <p><strong>무료배송</strong> | 12월 7일 배송예정</p>
+                        <h5 class="price-before text-gray">30,000원</h5>
+                        <h3 class="price-after text-danger">27,000원</h3>
+                    </div>
+                    <div class="col-12 product-amount">
+                        <h4>수량 : <strong>1</strong></h4>
+                        <div class="btn-group">
+                            <button class="btn btn-round btn-outline-danger btn-sm"><i class="material-icons">remove</i></button>
+                            <button class="btn btn-round btn-danger btn-sm"><i class="material-icons">add</i></button>
+                        </div>
+                    </div>
+                    <div class="row flex-row">
+                        <button class="btn btn-outline-danger btn-lg pay-btn"><i class="material-icons">flash_on</i> 정기배송</button>
+                        <button class="btn btn-outline-danger btn-lg pay-btn"><i class="material-icons">credit_card</i> 바로결제</button>
+                        <button class="btn btn-danger cart-btn btn-lg"><i class="material-icons">shopping_cart</i> 장바구니</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="section section-light-gray">
+        <div class="row">
+            <h3 class="info-title">&nbsp;자주찾는 상품</h3>
+        </div>
+        <div class="row product-relate">
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/5.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>ENFUSE</b>
+                                <br>
+                                <strong>크림오브더크롭</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">폐호흡|3mg|60ml</h6>
+                                <div class="price-container">
+                                    <span class="price text-success"> <span class="price-old text-danger">31,000원</span><br>27,000원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/3.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>Five Pawns</b>
+                                <br>
+                                <strong>그랜드마스터</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">입호흡|9.8mg|120ml</h6>
+                                <div class="price-container">
+                                    <span class="price text-success">31,000원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/2.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>The Finest</b>
+                                <br>
+                                <strong>드래곤 프룻</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">입호흡|9.8mg|30ml</h6>
+                                <div class="price-container">
+                                    <span class="price text-success"> <span class="price-old text-danger">30,000원</span><br>24,000원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/1.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>VGOD</b>
+                                <br>
+                                <strong>마일팟</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">40W~80W</h6>
+                                <div class="price-container">
+                                    <span class="price text-success">120,000원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/3.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>Five Pawns</b>
+                                <br>
+                                <strong>오크솔</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">입호흡|9.8mg|120ml</h6>
+                                <div class="price-container">
+                                    <span class="price text-success"> <span class="price-old text-danger">30,000원</span><br>24,000원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+
+            <!--아이템-->
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card card-product card-plain" data-colored-shadow="false">
+                    <a href="#">
+                        <div class="card-header card-header-image">
+                            <img src="./assets/img/examples/thumb/4.jpg" alt="...">
+                        </div>
+                        <div class="card-body overflow-hidden">
+                            <h5 class="card-title">
+                                <b>네스티</b>
+                                <br>
+                                <strong>슬로우 블로우</strong>
+                            </h5>
+                            <div class="card-description">
+                                <h6 class="card-title">입호흡|9.8mg|30ml</h6>
+                                <div class="price-container">
+                                    <span class="price text-success">24,001원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--아이템-->
+        </div>
+    </div>
+    <div class="section">
+        <div class="col-md-8 ml-auto mr-auto">
+            <ul class="nav nav-pills nav-pills-danger">
+                <li class="nav-item product-tab">
+                    <a class="nav-link active" href="#description" data-toggle="tab">
+                        <i class="material-icons">dashboard</i>
+                        <h5>상품설명</h5>
+                    </a>
+                </li>
+                <li class="nav-item product-tab">
+                    <a class="nav-link" href="#review" data-toggle="tab">
+                        <i class="material-icons">star</i>
+                        <h5>리뷰</h5>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content tab-space product-desc">
+                <div class="tab-pane active" id="description">
+                    <img src="https://via.placeholder.com/1500/0000FF" alt="...">
+                    <img src="https://via.placeholder.com/1500x6000" alt="...">
+                    <img src="https://via.placeholder.com/800x300/FFF00" alt="...">
+                </div>
+                <div class="tab-pane" id="review">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="media-area">
+                                <h3 class="title text-center">총 10개의 리뷰</h3>
+                                <div class="col-12 rating-star-review">
+                                    <div class="rating-container">
+                                        <div class="product-rating">
+                                            <span class="rating" style="width:94%"></span>
+                                        </div>
+                                        <b>4.7</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="review-content">
+                                    <!--리뷰-->
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <div class="col-12">
+                                                <div class="rating-container">
+                                                    <div class="product-rating">
+                                                        <span class="rating" style="width:100%"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <h4 class="media-heading">금강산도 식후경
+                                                    <small>&#xB7; 1일 전</small>
+                                                </h4>
+                                                <p>멀듯이, 이름을 어머니, 이름을 딴은 보고, 있습니다. 동경과 그러나 헤일 릴케 우는 걱정도 애기 계십니다. 헤는 위에도 노새, 이름과, 그러나 동경과 있습니다. 소학교 가을로 까닭이요, 북간도에 버리었습니다. 패, 어머니, 하나에 못 사람들의 나의 책상을 봅니다. 소학교 하나의 많은 그리고 이름을 딴은 소녀들의 까닭입니다. 위에도 나의 별 다하지 별 피어나듯이 비둘기, 거외다.
+
+                                                    계집애들의 언덕 피어나듯이 했던 까닭입니다. 멀듯이, 차 릴케 별 가을 때 까닭입니다. 그리고 까닭이요, 경, 하나의 어머니, 별 둘 봅니다. 까닭이요, 하나에 이런 하나에 계십니다. 나는 별빛이 마디씩 부끄러운 까닭입니다. 별 나의 릴케 이름과, 까닭이요, 위에 하늘에는 풀이 까닭입니다. 우는 벌써 흙으로 때 덮어 언덕 별 가을 부끄러운 까닭입니다.</p>
+                                                <div class="media-footer">
+                                                    <img class="img-container col-lg-8 col-xl-6" src="assets/img/dg6.jpg" alt="...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--리뷰-->
+                                    <!--리뷰-->
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <div class="col-12">
+                                                <div class="rating-container">
+                                                    <div class="product-rating">
+                                                        <span class="rating" style="width:100%"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <h4 class="media-heading">밥밥디라라
+                                                    <small>&#xB7; 1일 전</small>
+                                                </h4>
+                                                <p>아주 좋습니다 ㅋㅋ</p>
+                                                <div class="media-footer">
+                                                    <img class="img-container col-lg-8 col-xl-6" src="assets/img/dg2.jpg" alt="...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--리뷰-->
+                                    <!--리뷰-->
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <div class="col-12">
+                                                <div class="rating-container">
+                                                    <div class="product-rating">
+                                                        <span class="rating" style="width:20%"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <h4 class="media-heading">부정적인 사람
+                                                    <small>&#xB7; 1달 전</small>
+                                                </h4>
+                                                <p>난 진짜 개별로던데 리뷰쓰신 분들 혀에 미뢰 다 죽으심?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--리뷰-->
+                                </div>
+                                <div class="review-more">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-block btn-outline-secondary">더보기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <div class="features text-center">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info">
+                        <div class="icon icon-info">
+                            <i class="material-icons">local_shipping</i>
+                        </div>
+                        <h4 class="info-title">가장 빠른 배송</h4>
+                        <p>4시 이전에 주문하신 상품은 모두 당일 대한통운 택배로 접수되며(평일 기준) 도서산간 제외한 모든 지역에 1~2일 내외로 도착하게 됩니다.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info">
+                        <div class="icon icon-success">
+                            <i class="material-icons">verified_user</i>
+                        </div>
+                        <h4 class="info-title">정품만 취급</h4>
+                        <p>저희 비비베이프에서 판매되는 액상은 모두 정품 액상이며 개봉 후 첨가물이 들어가는 제품이 판매되는 제품 일절 없습니다.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info">
+                        <div class="icon icon-rose">
+                            <i class="material-icons">favorite</i>
+                        </div>
+                        <h4 class="info-title">친절한 상담</h4>
+                        <p>고객님께 늘 친절하고 정확한 상담을 드리겠습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="inc/footer :: footerFrg"></th:block>
+
+<th:block th:replace="inc/script :: scriptFrg"></th:block>
 
 </body>
 </html>

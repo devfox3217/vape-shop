@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<header class="p-3 bg-dark text-white" th:fragment="headerFrg">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a th:href="@{/}" class="nav-link px-2 text-white">홈으로</a></li>
+                <li><a th:href="@{/admin/dashboard}" class="nav-link px-2 text-white">대시보드</a></li>
+                <li><a th:href="@{/admin/setting/site}" class="nav-link px-2 text-white">설정</a></li>
+                <li><a th:href="@{/admin/product/list}" class="nav-link px-2 text-white">상품관리</a></li>
+                <li><a th:href="@{/admin/customer/list}" class="nav-link px-2 text-white">고객관리</a></li>
+                <li><a th:href="@{/admin/order/list}" class="nav-link px-2 text-white">주문관리</a></li>
+            </ul>
+
+        </div>
+    </div>
+</header>
+</html>
