@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "PRODUCT")
 @Data
 @Builder
 @DynamicUpdate

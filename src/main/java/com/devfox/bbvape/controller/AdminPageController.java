@@ -29,13 +29,13 @@ public class AdminPageController {
         return "admin/dashboard";
     }
 
-    @RequestMapping("setting/site")
+    @RequestMapping("/setting/site")
     public String settingSite() {
 
         return "admin/setting_site";
     }
 
-    @RequestMapping("setting/category")
+    @RequestMapping("/setting/category")
     public String settingCategory(
             Model model
     ) {
@@ -46,7 +46,7 @@ public class AdminPageController {
         return "admin/setting_category";
     }
 
-    @RequestMapping("setting/brand")
+    @RequestMapping("/setting/brand")
     public String settingBrand(
             Model model
     ) {
@@ -58,15 +58,20 @@ public class AdminPageController {
         return "admin/setting_brand";
     }
 
-    @RequestMapping("product/list")
+    @RequestMapping("/product/list")
     public String productList() {
 
         return "admin/product_list";
     }
 
-    @RequestMapping("product/insert")
-    public String productInsert() {
+    @RequestMapping("/product/insert")
+    public String productInsert(
+            Model model
+    ) {
+        List<Brand> brandList = brandService.getBrands();
+        model.addAttribute(brandList);
 
         return "admin/product_insert";
     }
+
 }

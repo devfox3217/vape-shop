@@ -10,4 +10,5 @@ public class BbvapeApplication {
         SpringApplication.run(BbvapeApplication.class, args);
     }
 
+
 }
