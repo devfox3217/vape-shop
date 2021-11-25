@@ -1,5 +1,6 @@
 package com.devfox.bbvape.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "BRAND")
@@ -29,5 +32,9 @@ public class Brand {
 
     @Column(name = "ord")
     private int ord;
+
+    @OneToMany(mappedBy = "brandItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Product> productList = new ArrayList<>();
 
 }

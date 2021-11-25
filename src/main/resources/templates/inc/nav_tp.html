@@ -20,17 +20,17 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a th:href="@{/liquid}" class="nav-link">
+                    <a th:href="@{/product(type=liquid)}" class="nav-link">
                         <i class="material-icons">air</i> 액상
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/devices.html" class="nav-link">
+                    <a th:href="@{/product(type=device)}" class="nav-link">
                         <i class="material-icons">view_carousel</i> 기기
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/etc.html" class="nav-link">
+                    <a th:href="@{/product(type=etc)}" class="nav-link">
                         <i class="material-icons">earbuds_battery</i> 기타
                     </a>
                 </li>
@@ -53,7 +53,7 @@
                         <a href="/faq.html" class="dropdown-item">
                             1:1문의
                         </a>
-                        <a href="/admin" class="dropdown-item" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/dashboard}" class="dropdown-item" sec:authorize="hasRole('ADMIN')">
                             어드민
                         </a>
                         <form method="post" th:action="@{/signout}" sec:authorize="isAuthenticated()">

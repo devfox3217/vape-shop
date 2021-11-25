@@ -1,6 +1,8 @@
 package com.devfox.bbvape.controller;
 
+import com.devfox.bbvape.model.Product;
 import com.devfox.bbvape.model.Setting;
+import com.devfox.bbvape.service.ProductService;
 import com.devfox.bbvape.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PageController {
 
     private final SettingService settingService;
+    private final ProductService productService;
 
     @ModelAttribute
     private void commonAttributes(
@@ -42,13 +48,31 @@ public class PageController {
         return "home";
     }
 
-    @RequestMapping("/liquid")
-    public String liquid() {
-        return "liquid";
+    @RequestMapping("/product")
+    public String product(
+            Model model,
+            @RequestParam(required = false) String type
+    ) {
+        if (type.equals("liquid") || type.equals("device") || type.equals("etc")) {
+
+            List<Product> productList = productService.readProductsAsType(type);
+
+            model.addAttribute("productList", productList);
+        } else {
+
+            type = "liquid";
+
+            List<Product> productList = productService.readProductsAsType(type);
+
+            model.addAttribute("productList", productList);
+
+        }
+
+        return "product";
     }
 
-    @RequestMapping("/liquid/product")
-    public String liquidProduct() {
-        return "liquid_product";
+    @RequestMapping("/product/item")
+    public String item() {
+        return "item";
     }
 }

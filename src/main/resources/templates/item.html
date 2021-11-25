@@ -64,23 +64,22 @@
         </div>
         <div class="row product-relate">
 
+
             <!--아이템-->
-            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="col-6 col-md-4 col-lg-3 col-xl-3">
                 <div class="card card-product card-plain" data-colored-shadow="false">
-                    <a href="#">
+                    <a th:href="@{/liquid/product}">
                         <div class="card-header card-header-image">
                             <img src="./assets/img/examples/thumb/5.jpg" alt="...">
                         </div>
-                        <div class="card-body overflow-hidden">
-                            <h5 class="card-title">
-                                <b>ENFUSE</b>
-                                <br>
-                                <strong>크림오브더크롭</strong>
-                            </h5>
-                            <div class="card-description">
+                        <div class="card-body overflow-hidden text-center">
+                            <h5 class="card-title my-0 py-0"><b>ENFUSE</b></h5>
+                            <h5 class="my-0 py-0 text-dark"><b>크림오브더크롭</b></h5>
+                            <p class="text-dark" style="margin-top: -6px">하이민트</p>
+                            <div class="card-description my-0 py-0">
                                 <h6 class="card-title">폐호흡|3mg|60ml</h6>
                                 <div class="price-container">
-                                    <span class="price text-success"> <span class="price-old text-danger">31,000원</span><br>27,000원</span>
+                                    <span class="price text-success"> <span class="price-old text-muted">31,000원</span><br><strong class="text-danger">27,000원</strong></span>
                                 </div>
                             </div>
                         </div>

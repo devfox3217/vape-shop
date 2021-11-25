@@ -24,17 +24,13 @@ public class AdminSettingController {
 
     private final CategoryService categoryService;
     private final BrandService brandService;
-    private final ProductService productService;
-    private final ProductImgService productImgService;
-    private final ProductCategoryService productCategoryService;
 
     // ******************** 상품 카테고리 페이지 ********************
 
     @PostMapping(value = "/getCategoryRef")
     @ResponseBody
     public List<Category> getCategoryRef(@RequestBody Map<String, String> data) {
-        List<Category> categoryList = categoryService.getHighCategory(data.get("type"));
-        return categoryList;
+        return categoryService.getHighCategory(data.get("type"));
     }
 
     @PostMapping(value = "getCategories")
@@ -96,6 +92,11 @@ public class AdminSettingController {
 
     // ******************** 제조사 페이지 ********************
 
+    @PostMapping(value = "/getBrands")
+    @ResponseBody
+    public List<Brand> getBrand(@RequestBody Map<String, String> data) {
+        return brandService.getBrands();
+    }
     @RequestMapping("/brandInsert")
     public void brandInsert(
             HttpServletResponse response,
@@ -142,92 +143,6 @@ public class AdminSettingController {
         brandService.deleteBrand(id);
 
         PageScriptUtil.alertAndMove(response, "삭제가 완료되었습니다.", "/admin/setting/brand");
-    }
-
-    // ******************** 상품등록 페이지 ********************
-
-    @RequestMapping("/productInsert")
-    public void productInsert(
-            HttpServletResponse response,
-            @RequestParam String type,
-            @RequestParam int brand,
-            @RequestParam String name,
-            @RequestParam String spec,
-            @RequestParam int cost_price,
-            @RequestParam(required = false) int discount_price,
-            @RequestParam int remain,
-            @RequestParam int[] category,
-            @RequestParam List<MultipartFile> img,
-            @RequestParam MultipartFile thumbnail
-    ) throws IOException {
-        String imgLocation = "/var/boot/bbvape/upload/img";
-        String thumbnailLocation = "/var/boot/bbvape/upload/thumbnail";
-
-        // 상품(Product)에 넣기
-        Product product = new Product();
-        product.setType(type);
-        product.setBrand(brand);
-        product.setName(name);
-        product.setSpec(spec);
-        product.setCostPrice(cost_price);
-        product.setDiscountPrice(discount_price);
-        product.setRemain(remain);
-        product.setEnabled(true);
-        product.setSoldOut(false);
-
-        // 썸네일 업로드
-        String thumbnailName = "thumbnail" + FileNameUtil.getFileName(thumbnail.getOriginalFilename());
-        File thumbnailFile = new File(thumbnailLocation, thumbnailName);
-
-        product.setThumbnail(thumbnailName);
-
-        try {
-            thumbnail.transferTo(thumbnailFile);
-        } catch (Exception e) {
-            PageScriptUtil.alertAndBack(response, "잘못된 업로드입니다.");
-        }
-
-        Product saveProduct = productService.createProduct(product);
-
-        if (saveProduct != null) {
-
-            for (int j : category) {
-                ProductCategory productCategory = new ProductCategory();
-                productCategory.setProductId(saveProduct.getId());
-                productCategory.setCategoryId(j);
-                productCategory.setBadge(false);
-
-                productCategoryService.createProductCategory(productCategory);
-
-            }
-
-            // 상세이미지 업로드
-            int imgIndex = 0;
-            for (MultipartFile multipartFile : img) {
-                String imgName = "img" + imgIndex + FileNameUtil.getFileName(multipartFile.getOriginalFilename());
-
-                File imgfile = new File(imgLocation, imgName);
-
-                try {
-                    multipartFile.transferTo(imgfile);
-                    ProductImg productImg = new ProductImg();
-                    productImg.setImg(imgName);
-                    productImg.setOrd(imgIndex);
-                    productImg.setProductId(saveProduct.getId());
-
-                    productImgService.createProductImg(productImg);
-
-                } catch (Exception e) {
-                    PageScriptUtil.alertAndBack(response, "상세이미지가 제대로 입력되지 않았습니다.");
-                }
-                imgIndex = imgIndex + 1;
-            }
-
-        } else {
-            PageScriptUtil.alertAndBack(response, "잘못된 업로드입니다.");
-        }
-
-        PageScriptUtil.alertAndMove(response, "상품이 입력되었습니다.", "/admin/product/insert");
     }
 
 }

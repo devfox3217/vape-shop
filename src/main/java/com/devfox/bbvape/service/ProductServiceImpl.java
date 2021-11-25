@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -19,5 +20,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> readProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> readProductsAsType(String type) {
+        return productRepository.findByType(type);
     }
 }

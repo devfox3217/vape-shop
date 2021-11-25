@@ -2,8 +2,10 @@ package com.devfox.bbvape.controller;
 
 import com.devfox.bbvape.model.Brand;
 import com.devfox.bbvape.model.Category;
+import com.devfox.bbvape.model.Product;
 import com.devfox.bbvape.service.BrandService;
 import com.devfox.bbvape.service.CategoryService;
+import com.devfox.bbvape.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminPageController {
 
+    private final ProductService productService;
     private final CategoryService categoryService;
     private final BrandService brandService;
 
@@ -59,17 +62,17 @@ public class AdminPageController {
     }
 
     @RequestMapping("/product/list")
-    public String productList() {
-
+    public String productList(
+            Model model
+    ) {
+        List<Product> productList = productService.readProducts();
+        model.addAttribute("productList", productList);
         return "admin/product_list";
     }
 
     @RequestMapping("/product/insert")
     public String productInsert(
-            Model model
     ) {
-        List<Brand> brandList = brandService.getBrands();
-        model.addAttribute(brandList);
 
         return "admin/product_insert";
     }

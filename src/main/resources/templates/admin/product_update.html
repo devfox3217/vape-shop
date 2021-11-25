@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="col-6 px-3">
-                <form id="InsertProduct" method="post" th:action="@{/admin/product/productInsert}" enctype="multipart/form-data">
+                <form id="InsertProduct" method="post" th:action="@{/admin/setting/productInsert}" enctype="multipart/form-data">
                     <div class="row pt-3 pb-3">
                         <div class="col-8 mb-3">
                             <label class="form-label">타입<sup>*</sup> (먼저 선택 필수)</label>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
-                                <label class="form-label">상품명<sup>*</sup>(상품명은 한글로)</label>
+                                <label class="form-label">상품명<sup>*(상품명은 한글로)</sup></label>
                                 <input id="NameInput" onkeyup="nameChanged()" type="text" class="form-control" name="name" required>
                             </div>
                         </div>

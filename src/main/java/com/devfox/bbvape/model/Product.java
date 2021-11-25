@@ -31,6 +31,9 @@ public class Product {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "subname")
+    private String subname;
+
     @Column(name = "spec")
     private String spec;
 
@@ -51,5 +54,10 @@ public class Product {
 
     @Column(name = "soldout")
     private boolean soldOut;
+
+    @ManyToOne
+    @JoinColumn(name = "brand", insertable = false, updatable = false)
+    private Brand brandItem;
+
 
 }
