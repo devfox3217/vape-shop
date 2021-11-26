@@ -14,4 +14,6 @@ public interface CategoryService {
     List<Category> getHighCategory(String type);
 
     void deleteCategory(int id);
+
+    List<Category> readCategoryAsType(String type);
 }

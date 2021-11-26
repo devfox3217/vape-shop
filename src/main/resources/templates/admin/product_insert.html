@@ -22,8 +22,9 @@
         </div>
         <div class="row">
             <div class="col-6 px-3">
-                <form id="InsertProduct" method="post" th:action="@{/admin/product/productInsert}" enctype="multipart/form-data">
+                <form onsubmit="return productInsert()" id="InsertProduct" method="post" th:action="@{/admin/product/productInsert}" enctype="multipart/form-data">
                     <div class="row pt-3 pb-3">
+                        <p class="text-danger"><sup>*</sup>표시의 내용은 필수입력입니다.</p>
                         <div class="col-8 mb-3">
                             <label class="form-label">타입<sup>*</sup> (먼저 선택 필수)</label>
                             <select onchange="typeSelected();specChanged()" id="TypeSelect" class="form-select" name="type" required>
@@ -41,49 +42,51 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">상품명<sup>*</sup>(상품명은 한글로)</label>
-                                <input id="NameInput" onkeyup="nameChanged()" type="text" class="form-control" name="name" required>
+                                <input id="NameInput" onkeyup="nameChanged()" type="text" class="form-control" name="name" maxlength="14" autocomplete="off" required>
+                                <p><sub>상품명 최대길이 14자리</sub></p>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">보조상품명</label>
-                                <input id="SubnameInput" onkeyup="subnameChanged()" type="text" class="form-control" name="subname">
+                                <input id="SubnameInput" onkeyup="subnameChanged()" type="text" class="form-control" name="subname" maxlength="10" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">간단스펙<sup>*</sup></label>
-                                <input id="SpecInput" onkeyup="specChanged()" type="text" class="form-control" name="spec" required>
+                                <input id="SpecInput" onkeyup="specChanged()" type="text" class="form-control" name="spec" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">원가<sup>*</sup></label>
-                                <input id="CostPriceInput" onkeyup="costPriceChanged()" type="text" class="form-control" name="cost_price" required>
+                                <input id="CostPriceInput" onkeyup="costPriceChanged()" type="number" class="form-control" name="cost_price" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">할인가</label>
-                                <input id="DiscountPriceInput" onkeyup="discountPriceChanged()" type="text" class="form-control" name="discount_price">
+                                <input id="DiscountPriceInput" onkeyup="discountPriceChanged()" type="number" class="form-control" name="discount_price" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label">재고수량<sup>*</sup></label>
-                                <input id="RemainInput" type="text" class="form-control" name="remain" required>
+                                <input id="RemainInput" type="number" class="form-control" name="remain" maxlength="3" autocomplete="off" required>
+                                <p><sub>재고수량 0이되면 자동 판매중지 처리, 재고수급이 원활하다면 999 입력</sub></p>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="mb-3">
                                 <label for="ThumbnailInput" class="form-label">썸네일 이미지<sup>*</sup></label>
-                                <input id="ThumbnailInput" onchange="thumbnailChanged()" class="form-control" type="file" name="thumbnail" required>
+                                <input id="ThumbnailInput" onchange="thumbnailChanged()" class="form-control" type="file" name="thumbnail" accept=".jpg, .png, .gif" required>
                             </div>
                         </div>
-                        <label class="form-label">상품설명 이미지<sup>*</sup>(입력칸 추가시 입력필수, 없을시 입력칸 삭제하기)</label>
-                        <label>최소한 한개 이상은 필수생성 후 입력</label>
-                        <div id="ImgInputContainer" class="col-12">
+                        <label class="form-label">상품설명 이미지<sup>*</sup></label>
+                        <sub>입력칸 추가시 입력필수, 없을시 입력칸 삭제하기. 최소한 한개 이상은 필수생성 후 입력</sub>
+                        <div id="ImgInputContainer" class="col-12 mt-5">
 
                         </div>
 
@@ -93,6 +96,7 @@
                         <hr>
 
                         <label class="form-label">카테고리 선택<sup>*</sup></label>
+                        <sub>하나 이상 선택 필수</sub>
                         <div id="CategoryContainer" class="col-8 mb-3">
 
                         </div>
@@ -152,6 +156,10 @@
     const ImgAddBtn = document.getElementById('ImgAddBtn');
     const CategoryContainer = document.getElementById('CategoryContainer');
 
+    const TabList = document.getElementsByClassName('img-tab');
+    const ImgSize = 1024 * 1024 * 2;
+    const CategoryList = document.querySelectorAll('input[name="category"]:checked');
+
     const PreThumbnail = document.getElementById('PreThumbnail');
     const PreBrand = document.getElementById('PreBrand');
     const PreName = document.getElementById('PreName');
@@ -196,24 +204,35 @@
     }
 
     function thumbnailChanged() {
-        if (ThumbnailInput.files && ThumbnailInput.files[0]) {
+        if (ThumbnailInput.files[0].size > ImgSize) {
+            alert('이미지 최대용량은 2MB입니다.');
+            ThumbnailInput.value = '';
+        } else {
+            if (ThumbnailInput.files && ThumbnailInput.files[0]) {
 
-            const reader = new FileReader();
+                const reader = new FileReader();
 
-            reader.onload = e => {
-                PreThumbnail.src = e.target.result
+                reader.onload = e => {
+                    PreThumbnail.src = e.target.result
+                }
+                reader.readAsDataURL(ThumbnailInput.files[0]);
+                PreThumbnail.style.width = PreThumbnail.clientWidth + 'px';
+                PreThumbnail.style.height = PreThumbnail.clientWidth + 'px';
             }
-            reader.readAsDataURL(ThumbnailInput.files[0])
         }
     }
 
     function imgChanged() {
-        const tabList = document.getElementsByClassName('img-tab');
         let html = '';
         PreImgContainer.innerHTML = '';
 
-        for (let i = 0; i < tabList.length; i++) {
-            html += '<img class="img-preview" src="" width="100%">'
+        for (let i = 0; i < TabList.length; i++) {
+            if (TabList[i].files[0].size > ImgSize) {
+                alert('이미지 최대용량은 2MB입니다.');
+                TabList[i].value = '';
+            } else {
+                html += '<img class="img-preview" src="" width="100%">'
+            }
         }
         PreImgContainer.innerHTML = html;
         const preImgList = document.getElementsByClassName('img-preview');
@@ -223,7 +242,7 @@
             reader.onload = e => {
                 preImgList[i].src = e.target.result
             }
-            reader.readAsDataURL(tabList[i].files[0]);
+            reader.readAsDataURL(TabList[i].files[0]);
         }
     }
 
@@ -232,7 +251,7 @@
             '<div class="row">' +
             '<div class="col-8">' +
             '<div class="mb-3">' +
-            '<input class="form-control img-tab" onchange="imgChanged()" type="file" name="img" required>' +
+            '<input class="form-control img-tab" onchange="imgChanged()" type="file" name="img" accept=".jpg, .png, .gif" required>' +
             '</div>' +
             '</div>' +
             '<div class="col-4">' +
@@ -319,7 +338,7 @@
                             if (data[high].id === data[row].ref) {
                                 const rowCategory =
                                     '<div class="form-check">' +
-                                    '<input class="form-check-input" type="checkbox" value="' + data[row].id + '" id="category' + data[row].id + '" name="category">' +
+                                    '<input class="form-check-input category-tab" type="checkbox" value="' + data[row].id + '" id="category' + data[row].id + '" name="category">' +
                                     '<label class="form-check-label" for="category' + data[row].id + '">' + data[row].name + '</label>' +
                                     '</div>';
                                 html += rowCategory;
@@ -334,6 +353,19 @@
             .catch((error) =>
                 console.log("error:", error)
             );
+    }
+
+    function productInsert() {
+        if (TabList.length === 0) {
+            alert('상품설명 이미지가 하나 이상 등록되어야 합니다.');
+            return false;
+        }
+        else if (CategoryList.length === 0) {
+            alert('카테고리가 하나 이상 등록되어야 합니다.');
+            return false;
+        } else {
+            return true;
+        }
     }
 </script>
 </body>

@@ -1,7 +1,9 @@
 package com.devfox.bbvape.controller;
 
+import com.devfox.bbvape.model.Category;
 import com.devfox.bbvape.model.Product;
 import com.devfox.bbvape.model.Setting;
+import com.devfox.bbvape.service.CategoryService;
 import com.devfox.bbvape.service.ProductService;
 import com.devfox.bbvape.service.SettingService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class PageController {
 
     private final SettingService settingService;
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @ModelAttribute
     private void commonAttributes(
@@ -30,7 +33,7 @@ public class PageController {
     ) {
         Setting setting = settingService.loadSetting();
 
-        model.addAttribute("setting", setting);
+        model.addAttribute(setting);
     }
 
     @RequestMapping("/signin")
@@ -57,16 +60,20 @@ public class PageController {
 
             List<Product> productList = productService.readProductsAsType(type);
 
-            model.addAttribute("productList", productList);
+            model.addAttribute(productList);
         } else {
 
             type = "liquid";
 
             List<Product> productList = productService.readProductsAsType(type);
 
-            model.addAttribute("productList", productList);
+            model.addAttribute(productList);
 
         }
+
+        List<Category> categoryList = categoryService.readCategoryAsType(type);
+
+        model.addAttribute(categoryList);
 
         return "product";
     }

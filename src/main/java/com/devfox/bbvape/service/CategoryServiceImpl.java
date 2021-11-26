@@ -71,4 +71,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(int id) {
         categoryRepository.deleteById(id);
     }
+
+    @Override
+    public List<Category> readCategoryAsType(String type) {
+        return categoryRepository.findByType(type, Sort.by(Sort.Direction.ASC, "ord"));
+    }
 }

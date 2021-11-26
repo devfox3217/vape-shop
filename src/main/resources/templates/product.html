@@ -30,118 +30,13 @@
                                 </h5>
                             </div>
                             <div id="collapseSearch" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                <div class="col-12">
+                                <div class="col-12" th:each="c : ${categoryList}" th:if="${c.ref == 0}">
                                     <div class="title">
-                                        <h3>사용법</h3>
+                                        <h3 th:text="${c.name}"></h3>
                                     </div>
-                                    <div class="form-check">
+                                    <div class="form-check" th:each="cr : ${categoryList}" th:if="${cr.ref == c.id}">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 입호흡
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 폐호흡
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="title">
-                                        <h3>구분</h3>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 인기
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 신상품
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 할인
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 할인
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="title">
-                                        <h3>향료</h3>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 멘솔
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 과일
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 과일멘솔
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 연초
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 연초멘솔
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 디저트
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 음료
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 기타
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="title">
-                                        <h3>브랜드</h3>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> NASTY
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> OVID hose CloudFactory
-                                            <span class="form-check-sign"><span class="check"></span></span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value=""> 나만없어
+                                            <input class="form-check-input" type="checkbox" value="" th:text="${cr.name}">
                                             <span class="form-check-sign"><span class="check"></span></span>
                                         </label>
                                     </div>

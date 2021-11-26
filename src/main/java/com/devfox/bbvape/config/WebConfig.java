@@ -9,7 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        System.out.println("헬로");
         registry.addResourceHandler("/thumbnail/**")
                 .addResourceLocations("file:/var/boot/bbvape/upload/thumbnail/");
         registry.addResourceHandler("/images/**")
