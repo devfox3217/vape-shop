@@ -11,79 +11,82 @@
 
     <div class="container">
         <div class="row mb-3">
-            <h1 class="mt-2 mb-4">상품관리</h1>
+            <h1 class="mt-2 mb-4">상품수정</h1>
             <div class="col-12">
                 <div class="btn-group">
                     <a th:href="@{/admin/product/list}" class="btn btn-primary">상품리스트</a>
-                    <a th:href="@{/admin/product/insert}" class="btn btn-primary active">상품등록</a>
+                    <a th:href="@{/admin/product/insert}" class="btn btn-primary">상품등록</a>
                 </div>
             </div>
             <hr class="mt-3">
         </div>
         <div class="row">
             <div class="col-6 px-3">
-                <form id="InsertProduct" method="post" th:action="@{/admin/setting/productInsert}" enctype="multipart/form-data">
-                    <div class="row pt-3 pb-3">
+                <form onsubmit="return productInsert()" id="InsertProduct" method="post" th:action="@{/admin/product/productUpdate}" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="">
+                    <div class="row pb-3">
+                        <p class="text-danger"><sup>*</sup>표시의 내용은 필수입력입니다.</p>
                         <div class="col-8 mb-3">
-                            <label class="form-label">타입<sup>*</sup> (먼저 선택 필수)</label>
-                            <select onchange="typeSelected();specChanged()" id="TypeSelect" class="form-select" name="type" required>
-                                <option value="">타입을 선택하세요</option>
-                                <option value="liquid">액상</option>
-                                <option value="device">기기</option>
-                                <option value="etc">기타</option>
-                            </select>
+                            <div class="mb-3">
+                                <label class="form-label">타입</label>
+                                <input type="text" class="form-control" value="액상" disabled>
+                            </div>
                         </div>
-                        <div class="col-8 mb-3">
-                            <label class="form-label">브랜드<sup>*</sup></label>
-                            <select id="BrandSelect" onchange="brandChanged()" class="form-select" name="brand" required>
-                            </select>
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <label class="form-label">브랜드</label>
+                                <input type="text" class="form-control" value="Nasty" disabled>
+                            </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
-                                <label class="form-label">상품명<sup>*(상품명은 한글로)</sup></label>
-                                <input id="NameInput" onkeyup="nameChanged()" type="text" class="form-control" name="name" required>
+                                <label class="form-label">상품명<sup>*</sup>(상품명은 한글로)</label>
+                                <input id="NameInput" onkeyup="nameChanged()" type="text" class="form-control" name="name" maxlength="14" autocomplete="off" required>
+                                <p><sub>상품명 최대길이 14자리</sub></p>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">보조상품명</label>
-                                <input id="SubnameInput" onkeyup="subnameChanged()" type="text" class="form-control" name="subname">
+                                <input id="SubnameInput" onkeyup="subnameChanged()" type="text" class="form-control" name="subname" maxlength="10" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">간단스펙<sup>*</sup></label>
-                                <input id="SpecInput" onkeyup="specChanged()" type="text" class="form-control" name="spec" required>
+                                <input id="SpecInput" onkeyup="specChanged()" type="text" class="form-control" name="spec" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">원가<sup>*</sup></label>
-                                <input id="CostPriceInput" onkeyup="costPriceChanged()" type="text" class="form-control" name="cost_price" required>
+                                <input id="CostPriceInput" onkeyup="costPriceChanged()" type="number" class="form-control" name="cost_price" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">할인가</label>
-                                <input id="DiscountPriceInput" onkeyup="discountPriceChanged()" type="text" class="form-control" name="discount_price">
+                                <input id="DiscountPriceInput" onkeyup="discountPriceChanged()" type="number" class="form-control" name="discount_price" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label">재고수량<sup>*</sup></label>
-                                <input id="RemainInput" type="text" class="form-control" name="remain" required>
+                                <input id="RemainInput" type="number" class="form-control" name="remain" maxlength="3" autocomplete="off" required>
+                                <p><sub>재고수량 0이되면 자동 판매중지 처리, 재고수급이 원활하다면 999 입력</sub></p>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="mb-3">
                                 <label for="ThumbnailInput" class="form-label">썸네일 이미지<sup>*</sup></label>
-                                <input id="ThumbnailInput" onchange="thumbnailChanged()" class="form-control" type="file" name="thumbnail" required>
+                                <input id="ThumbnailInput" onchange="thumbnailChanged()" class="form-control" type="file" name="thumbnail" accept=".jpg, .png, .gif" required>
                             </div>
                         </div>
-                        <label class="form-label">상품설명 이미지<sup>*</sup>(입력칸 추가시 입력필수, 없을시 입력칸 삭제하기)</label>
-                        <label>최소한 한개 이상은 필수생성 후 입력</label>
-                        <div id="ImgInputContainer" class="col-12">
+                        <label class="form-label">상품설명 이미지<sup>*</sup></label>
+                        <sub>입력칸 추가시 입력필수, 없을시 입력칸 삭제하기. 최소한 한개 이상은 필수생성 후 입력</sub>
+
+                        <div id="ImgInputContainer" class="col-12 mt-5">
 
                         </div>
 
@@ -93,6 +96,7 @@
                         <hr>
 
                         <label class="form-label">카테고리 선택<sup>*</sup></label>
+                        <sub>하나 이상 선택 필수</sub>
                         <div id="CategoryContainer" class="col-8 mb-3">
 
                         </div>
@@ -104,7 +108,7 @@
             <div class="col-6 px-3">
                 <div class="row pt-3 pb-3">
                     <div class="col-12 mb-3">
-                        <button class="btn btn-lg btn-success col-12" form="InsertProduct">이대로 등록하기</button>
+                        <button class="btn btn-lg btn-success col-12" form="InsertProduct">이대로 수정하기</button>
                     </div>
                     <div class="col-4">
                         <img id="PreThumbnail" src="/img/placeholder.jpg" class="img-thumbnail" width="100%">
@@ -139,8 +143,6 @@
 
     const csrfToken = document.querySelector('meta[name=\'_csrf\']')['content']
 
-    const TypeSelect = document.getElementById('TypeSelect');
-    const BrandSelect = document.getElementById('BrandSelect');
     const NameInput = document.getElementById('NameInput');
     const SubnameInput = document.getElementById('SubnameInput');
     const SpecInput = document.getElementById('SpecInput');
@@ -152,6 +154,10 @@
     const ImgAddBtn = document.getElementById('ImgAddBtn');
     const CategoryContainer = document.getElementById('CategoryContainer');
 
+    const TabList = document.getElementsByClassName('img-tab');
+    const ImgSize = 1024 * 1024 * 3;
+    const CategoryList = document.querySelectorAll('input[name="category"]:checked');
+
     const PreThumbnail = document.getElementById('PreThumbnail');
     const PreBrand = document.getElementById('PreBrand');
     const PreName = document.getElementById('PreName');
@@ -160,10 +166,6 @@
     const PreCostPrice = document.getElementById('PreCostPrice');
     const PreDiscountPrice = document.getElementById('PreDiscoutPrice');
     const PreImgContainer = document.getElementById('PreImgContainer');
-
-    function brandChanged() {
-        PreBrand.innerHTML = BrandSelect.options[BrandSelect.selectedIndex].text;
-    }
 
     function nameChanged() {
         PreName.innerHTML = NameInput.value;
@@ -196,24 +198,35 @@
     }
 
     function thumbnailChanged() {
-        if (ThumbnailInput.files && ThumbnailInput.files[0]) {
+        if (ThumbnailInput.files[0].size > ImgSize) {
+            alert('이미지 최대용량은 3MB입니다.');
+            ThumbnailInput.value = '';
+        } else {
+            if (ThumbnailInput.files && ThumbnailInput.files[0]) {
 
-            const reader = new FileReader();
+                const reader = new FileReader();
 
-            reader.onload = e => {
-                PreThumbnail.src = e.target.result
+                reader.onload = e => {
+                    PreThumbnail.src = e.target.result
+                }
+                reader.readAsDataURL(ThumbnailInput.files[0]);
+                PreThumbnail.style.width = PreThumbnail.clientWidth + 'px';
+                PreThumbnail.style.height = PreThumbnail.clientWidth + 'px';
             }
-            reader.readAsDataURL(ThumbnailInput.files[0])
         }
     }
 
     function imgChanged() {
-        const tabList = document.getElementsByClassName('img-tab');
         let html = '';
         PreImgContainer.innerHTML = '';
 
-        for (let i = 0; i < tabList.length; i++) {
-            html += '<img class="img-preview" src="" width="100%">'
+        for (let i = 0; i < TabList.length; i++) {
+            if (TabList[i].files[0].size > ImgSize) {
+                alert('이미지 최대용량은 3MB입니다.');
+                TabList[i].value = '';
+            } else {
+                html += '<img class="img-preview" src="" width="100%">'
+            }
         }
         PreImgContainer.innerHTML = html;
         const preImgList = document.getElementsByClassName('img-preview');
@@ -223,7 +236,7 @@
             reader.onload = e => {
                 preImgList[i].src = e.target.result
             }
-            reader.readAsDataURL(tabList[i].files[0]);
+            reader.readAsDataURL(TabList[i].files[0]);
         }
     }
 
@@ -232,7 +245,7 @@
             '<div class="row">' +
             '<div class="col-8">' +
             '<div class="mb-3">' +
-            '<input class="form-control img-tab" onchange="imgChanged()" type="file" name="img" required>' +
+            '<input class="form-control img-tab" onchange="imgChanged()" type="file" name="img" accept=".jpg, .png, .gif" required>' +
             '</div>' +
             '</div>' +
             '<div class="col-4">' +
@@ -242,98 +255,17 @@
         ImgInputContainer.append(html);
     }
 
-    function typeSelected() {
-        const type = TypeSelect.value;
-
-        if (type === "liquid") {
-            SpecInput.value = "호흡|MG|ML";
-            getCategory(type);
-            getBrand(type);
+    function productInsert() {
+        if (TabList.length === 0) {
+            alert('상품설명 이미지가 하나 이상 등록되어야 합니다.');
+            return false;
         }
-
-        if (type === "device") {
-            SpecInput.value = "Max W";
-            getCategory(type);
-            getBrand(type);
+        else if (CategoryList.length === 0) {
+            alert('카테고리가 하나 이상 등록되어야 합니다.');
+            return false;
+        } else {
+            return true;
         }
-
-        if (type === "etc") {
-            SpecInput.value = "";
-            getCategory(type);
-            getBrand(type);
-        }
-
-        if (type === "") {
-            SpecInput.value = "";
-            CategoryContainer.innerHTML = "";
-        }
-
-    }
-
-    function getBrand(type) {
-
-        fetch("/admin/setting/getBrands", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-                type: TypeSelect.value
-            })
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                let html = '<option value="">브랜드를 선택하세요</option>';
-                for (let item in data) {
-                    if (type === data[item].type) {
-                        const brandItem = '<option value="' + data[item].id + '">' + data[item].name + '</option>'
-                        html += brandItem;
-                    }
-                }
-
-                BrandSelect.innerHTML = html;
-            })
-    }
-
-    function getCategory(type) {
-
-        fetch("/admin/setting/getCategories", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-                type: TypeSelect.value
-            })
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                let html = '';
-                for (let high in data) {
-                    if (data[high].ref === 0 && type === data[high].type) {
-                        const highCategory = '<div class="title mt-3"><h4>' + data[high].name + '</h4></div>';
-                        html += highCategory;
-                        for (let row in data) {
-                            if (data[high].id === data[row].ref) {
-                                const rowCategory =
-                                    '<div class="form-check">' +
-                                    '<input class="form-check-input" type="checkbox" value="' + data[row].id + '" id="category' + data[row].id + '" name="category">' +
-                                    '<label class="form-check-label" for="category' + data[row].id + '">' + data[row].name + '</label>' +
-                                    '</div>';
-                                html += rowCategory;
-                            }
-                        }
-
-                    }
-                }
-
-                CategoryContainer.innerHTML = html;
-            })
-            .catch((error) =>
-                console.log("error:", error)
-            );
     }
 </script>
 </body>

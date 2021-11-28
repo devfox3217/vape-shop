@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
             userInfo.setUsername(user.getUsername());
             userInfo.setNickname(nickname);
-            userInfo.setPoint(setting.getPointSignup());
+            userInfo.setPoint(setting.getSitePointSignup());
             userInfo.setRole("ROLE_REGISTER");
             userInfo.setPassword(encoder.encode(user.getPassword()));
             userInfo.setAdult(false);

@@ -119,4 +119,5 @@ public class AdminProductController {
 
         PageScriptUtil.alertAndMove(response, "상품이 입력되었습니다.", "/admin/product/insert");
     }
+
 }

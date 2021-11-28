@@ -76,5 +76,9 @@ public class AdminPageController {
 
         return "admin/product_insert";
     }
+    @RequestMapping("/product/update")
+    public String productUpdate() {
+        return "admin/product_update";
+    }
 
 }
