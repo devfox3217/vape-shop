@@ -83,16 +83,15 @@
                                 <label for="ThumbnailInput" class="form-label">썸네일 이미지<sup>*</sup></label>
                                 <input id="ThumbnailInput" onchange="thumbnailChanged()" class="form-control" type="file" name="thumbnail" accept=".jpg, .png, .gif" required>
                             </div>
+                            <div id="ImgTab" class="mb-3">
+                                <label class="form-label">상품설명 이미지<sup>*</sup></label>
+                                <input id="ImgInput" onchange="uploadImg()" class="form-control" type="file" accept=".jpg, .png, .gif">
+                                <input id="ContentInput" type="hidden" name="content">
+                                <input id="ContentEditInput" type="hidden" name="content_edit">
+                            </div>
                         </div>
-                        <label class="form-label">상품설명 이미지<sup>*</sup></label>
-                        <sub>입력칸 추가시 입력필수, 없을시 입력칸 삭제하기. 최소한 한개 이상은 필수생성 후 입력</sub>
+                        <div id="ImgContainer" class="row mb-5">
 
-                        <div id="ImgInputContainer" class="col-12 mt-5">
-
-                        </div>
-
-                        <div class="col-12 mb-4">
-                            <button type="button" id="ImgAddBtn" onclick="addImgTab()" class="btn btn-sm btn-primary col-12">추가</button>
                         </div>
                         <hr>
 
@@ -151,15 +150,13 @@
     const SpecInput = document.getElementById('SpecInput');
     const CostPriceInput = document.getElementById('CostPriceInput');
     const DiscountPriceInput = document.getElementById('DiscountPriceInput');
-    const RemainInput = document.getElementById('RemainInput');
     const ThumbnailInput = document.getElementById('ThumbnailInput');
-    const ImgInputContainer = document.getElementById('ImgInputContainer');
-    const ImgAddBtn = document.getElementById('ImgAddBtn');
+    const ImgContainer = document.getElementById('ImgContainer');
+    const ContentInput = document.getElementById('ContentInput');
+    const ContentEditInput = document.getElementById('ContentEditInput');
     const CategoryContainer = document.getElementById('CategoryContainer');
 
-    const TabList = document.getElementsByClassName('img-tab');
     const ImgSize = 1024 * 1024 * 3;
-    const CategoryList = document.querySelectorAll('input[name="category"]:checked');
 
     const PreThumbnail = document.getElementById('PreThumbnail');
     const PreBrand = document.getElementById('PreBrand');
@@ -169,6 +166,116 @@
     const PreCostPrice = document.getElementById('PreCostPrice');
     const PreDiscountPrice = document.getElementById('PreDiscoutPrice');
     const PreImgContainer = document.getElementById('PreImgContainer');
+
+    function uploadImg() {
+        const imgImput = document.getElementById('ImgInput');
+        const imgFile = imgImput.files[0];
+        const formData = new FormData();
+        formData.append('img', imgFile);
+        if (imgFile.size > ImgSize) {
+            alert('이미지 최대용량은 3MB입니다.');
+            imgImput.value = '';
+        } else {
+
+            fetch('/admin/product/imgUpload', {
+                method: 'POST',
+                headers: {
+                    'X-XSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                        imgTabChange(data.img);
+                    }
+                )
+        }
+    }
+
+    function imgTabChange(newImg) {
+        const imgImput = document.getElementById('ImgInput');
+        let newTab =
+            '<div class="row my-1 img-tab">' +
+            '<div class="col-8 bg-secondary">' +
+            '<img class="p-4" src="' + newImg + '" height="200px">' +
+            '</div>' +
+            '<div class="col-4 bg-secondary">' +
+            '<button type="button" onclick="deleteImg()" class="btn btn-danger mt-4">삭제</button>' +
+            '<div class="btn-group">' +
+            '<button type="button" class="btn btn-warning mt-4" onclick="upImg()"><i class="bi bi-arrow-up-circle-fill"></i></button>' +
+            '<button type="button" class="btn btn-warning mt-4" onclick="downImg()"><i class="bi bi-arrow-down-circle-fill"></i></button>' +
+            '</div>' +
+            '</div>' +
+            '</div>'
+        let newImgTag = '<img class="img-preview" src="' + newImg + '" width="100%">'
+
+        let tabHtml = ImgContainer.innerHTML;
+        tabHtml += newTab;
+        ImgContainer.innerHTML = tabHtml;
+
+        let ImgHtml = PreImgContainer.innerHTML;
+        ImgHtml += newImgTag;
+        PreImgContainer.innerHTML = ImgHtml;
+
+        imgImput.value = '';
+    }
+
+    function deleteImg() {
+        const imgTab = document.querySelectorAll('.img-tab');
+        const previewImg = document.querySelectorAll('.img-preview');
+        let num;
+        [].forEach.call(imgTab, function (el) {
+            el.addEventListener('click', function () {
+                num = getElementIndex(imgTab, el);
+                imgTab[num].remove();
+                previewImg[num].remove();
+            });
+        });
+    }
+
+    function upImg() {
+        let imgTab = document.querySelectorAll('.img-tab');
+        let previewImg = document.querySelectorAll('.img-preview');
+        let num;
+        [].forEach.call(imgTab, function (el) {
+            el.addEventListener('click', function () {
+                num = getElementIndex(imgTab, el);
+                if (num === 0) {
+                } else {
+                    imgTab[num - 1].before(imgTab[num]);
+                    previewImg[num - 1].before(previewImg[num]);
+                }
+            });
+        });
+    }
+
+    function downImg() {
+        let imgTab = document.querySelectorAll('.img-tab');
+        let previewImg = document.querySelectorAll('.img-preview');
+        let num;
+        [].forEach.call(imgTab, function (el) {
+            el.addEventListener('click', function () {
+                num = getElementIndex(imgTab, el);
+                if (num === imgTab.length -1) {
+                } else {
+                    imgTab[num + 1].after(imgTab[num]);
+                    previewImg[num + 1].after(previewImg[num]);
+                }
+            });
+        });
+    }
+
+    function setImgTags() {
+        ContentInput.value = PreImgContainer.innerHTML;
+        ContentEditInput.value = ImgContainer.innerHTML;
+
+        console.log('잇힝' + ContentEditInput.value);
+    }
+
+    function getElementIndex(element, range) {
+        if (!!range) return [].indexOf.call(element, range);
+        return [].indexOf.call(element.parentNode.children, element);
+    }
 
     function brandChanged() {
         PreBrand.innerHTML = BrandSelect.options[BrandSelect.selectedIndex].text;
@@ -223,45 +330,6 @@
         }
     }
 
-    function imgChanged() {
-        let html = '';
-        PreImgContainer.innerHTML = '';
-
-        for (let i = 0; i < TabList.length; i++) {
-            if (TabList[i].files[0].size > ImgSize) {
-                alert('이미지 최대용량은 3MB입니다.');
-                TabList[i].value = '';
-            } else {
-                html += '<img class="img-preview" src="" width="100%">'
-            }
-        }
-        PreImgContainer.innerHTML = html;
-        const preImgList = document.getElementsByClassName('img-preview');
-
-        for (let i = 0; i < preImgList.length; i++) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                preImgList[i].src = e.target.result
-            }
-            reader.readAsDataURL(TabList[i].files[0]);
-        }
-    }
-
-    function addImgTab() {
-        const html = document.createRange().createContextualFragment(
-            '<div class="row">' +
-            '<div class="col-8">' +
-            '<div class="mb-3">' +
-            '<input class="form-control img-tab" onchange="imgChanged()" type="file" name="img" accept=".jpg, .png, .gif" required>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-4">' +
-            '<button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);imgChanged()" class="btn btn-danger delete-img">삭제</button>' +
-            '</div>' +
-            '</div>');
-        ImgInputContainer.append(html);
-    }
-
     function typeSelected() {
         const type = TypeSelect.value;
 
@@ -304,16 +372,17 @@
         })
             .then((response) => response.json())
             .then((data) => {
-                let html = '<option value="">브랜드를 선택하세요</option>';
-                for (let item in data) {
-                    if (type === data[item].type) {
-                        const brandItem = '<option value="' + data[item].id + '">' + data[item].name + '</option>'
-                        html += brandItem;
+                    let html = '<option value="">브랜드를 선택하세요</option>';
+                    for (let item in data) {
+                        if (type === data[item].type) {
+                            const brandItem = '<option value="' + data[item].id + '">' + data[item].name + '</option>'
+                            html += brandItem;
+                        }
                     }
-                }
 
-                BrandSelect.innerHTML = html;
-            })
+                    BrandSelect.innerHTML = html;
+                }
+            )
     }
 
     function getCategory(type) {
@@ -330,38 +399,43 @@
         })
             .then((response) => response.json())
             .then((data) => {
-                let html = '';
-                for (let high in data) {
-                    if (data[high].ref === 0 && type === data[high].type) {
-                        const highCategory = '<div class="title mt-3"><h4>' + data[high].name + '</h4></div>';
-                        html += highCategory;
-                        for (let row in data) {
-                            if (data[high].id === data[row].ref) {
-                                const rowCategory =
-                                    '<div class="form-check">' +
-                                    '<input class="form-check-input category-tab" type="checkbox" value="' + data[row].id + '" id="category' + data[row].id + '" name="category">' +
-                                    '<label class="form-check-label" for="category' + data[row].id + '">' + data[row].name + '</label>' +
-                                    '</div>';
-                                html += rowCategory;
+                    let html = '';
+                    for (let high in data) {
+                        if (data[high].ref === 0 && type === data[high].type) {
+                            const highCategory = '<div class="title mt-3"><h4>' + data[high].name + '</h4></div>';
+                            html += highCategory;
+                            for (let row in data) {
+                                if (data[high].id === data[row].ref) {
+                                    const rowCategory =
+                                        '<div class="form-check">' +
+                                        '<input class="form-check-input category-tab" type="checkbox" value="' + data[row].id + '" id="category' + data[row].id + '" name="category">' +
+                                        '<label class="form-check-label" for="category' + data[row].id + '">' + data[row].name + '</label>' +
+                                        '</div>';
+                                    html += rowCategory;
+                                }
                             }
+
                         }
-
                     }
-                }
 
-                CategoryContainer.innerHTML = html;
-            })
+                    CategoryContainer.innerHTML = html;
+                }
+            )
             .catch((error) =>
                 console.log("error:", error)
             );
     }
 
     function productInsert() {
+        const CategoryList = document.querySelectorAll('input[name="category"]:checked');
+        const TabList = document.getElementsByClassName('img-tab');
+
+        setImgTags();
+
         if (TabList.length === 0) {
             alert('상품설명 이미지가 하나 이상 등록되어야 합니다.');
             return false;
-        }
-        else if (CategoryList.length === 0) {
+        } else if (CategoryList.length === 0) {
             alert('카테고리가 하나 이상 등록되어야 합니다.');
             return false;
         } else {

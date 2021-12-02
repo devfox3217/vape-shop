@@ -55,6 +55,12 @@ public class Product {
     @Column(name = "soldout")
     private boolean soldOut;
 
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "content_edit")
+    private String contentEdit;
+
     @ManyToOne
     @JoinColumn(name = "brand", insertable = false, updatable = false)
     private Brand brandItem;

@@ -10,15 +10,15 @@ import com.devfox.bbvape.util.FileNameUtil;
 import com.devfox.bbvape.util.PageScriptUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -34,6 +34,29 @@ public class AdminProductController {
 
     // ******************** 상품등록 페이지 ********************
 
+    @PostMapping("/imgUpload")
+    @ResponseBody
+    public HashMap<String, String> imgUpload(
+            @RequestParam(name = "img") MultipartFile img,
+            HttpServletResponse response
+    ) throws IOException {
+
+        String imgLocation = "/var/boot/bbvape/upload/img";
+
+        String imgName = "img" + FileNameUtil.getFileName(img.getOriginalFilename());
+        File imgFile = new File(imgLocation, imgName);
+
+        try {
+            img.transferTo(imgFile);
+        } catch (Exception e) {
+            PageScriptUtil.alertAndBack(response, "잘못된 업로드입니다.");
+        }
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("img", "/images/" + imgName);
+        return map;
+    }
+
     @RequestMapping("/productInsert")
     public void productInsert(
             HttpServletResponse response,
@@ -46,13 +69,12 @@ public class AdminProductController {
             @RequestParam(defaultValue = "0") int discount_price,
             @RequestParam int remain,
             @RequestParam int[] category,
-            @RequestParam List<MultipartFile> img,
-            @RequestParam MultipartFile thumbnail
+            @RequestParam MultipartFile thumbnail,
+            @RequestParam String content,
+            @RequestParam String content_edit
     ) throws IOException {
-        String imgLocation = "/var/boot/bbvape/upload/img";
         String thumbnailLocation = "/var/boot/bbvape/upload/thumbnail";
 
-        // 상품(Product)에 넣기
         Product product = new Product();
         product.setType(type);
         product.setBrand(brand);
@@ -64,6 +86,8 @@ public class AdminProductController {
         product.setRemain(remain);
         product.setEnabled(true);
         product.setSoldOut(false);
+        product.setContent(content);
+        product.setContentEdit(content_edit);
 
         // 썸네일 업로드
         String thumbnailName = "thumbnail" + FileNameUtil.getFileName(thumbnail.getOriginalFilename());
@@ -89,28 +113,6 @@ public class AdminProductController {
 
                 productCategoryService.createProductCategory(productCategory);
 
-            }
-
-            // 상세이미지 업로드
-            int imgIndex = 0;
-            for (MultipartFile multipartFile : img) {
-                String imgName = "img" + imgIndex + FileNameUtil.getFileName(multipartFile.getOriginalFilename());
-
-                File imgfile = new File(imgLocation, imgName);
-
-                try {
-                    multipartFile.transferTo(imgfile);
-                    ProductImg productImg = new ProductImg();
-                    productImg.setImg(imgName);
-                    productImg.setOrd(imgIndex);
-                    productImg.setProductId(saveProduct.getId());
-
-                    productImgService.createProductImg(productImg);
-
-                } catch (Exception e) {
-                    PageScriptUtil.alertAndBack(response, "상세이미지가 제대로 입력되지 않았습니다.");
-                }
-                imgIndex = imgIndex + 1;
             }
 
         } else {
