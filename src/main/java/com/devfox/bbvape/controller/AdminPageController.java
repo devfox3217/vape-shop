@@ -6,13 +6,16 @@ import com.devfox.bbvape.model.Product;
 import com.devfox.bbvape.service.BrandService;
 import com.devfox.bbvape.service.CategoryService;
 import com.devfox.bbvape.service.ProductService;
+import com.devfox.bbvape.service.SettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class AdminPageController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final BrandService brandService;
+    private final SettingService settingService;
 
     @RequestMapping(value = {"", "/", "dashboard"})
     public String dashboard() {
@@ -33,8 +37,10 @@ public class AdminPageController {
     }
 
     @RequestMapping("/setting/site")
-    public String settingSite() {
-
+    public String settingSite(
+            Model model
+    ) {
+        model.addAttribute("siteSetting", settingService.loadSetting());
         return "admin/setting_site";
     }
 
@@ -76,9 +82,18 @@ public class AdminPageController {
 
         return "admin/product_insert";
     }
+
     @RequestMapping("/product/update")
-    public String productUpdate() {
-        return "admin/product_update";
+    public String productUpdate(
+            HttpServletResponse response,
+            @RequestParam long product
+    ) {
+        try {
+            productService.readProduct(product);
+            return "admin/product_update";
+        } catch (NumberFormatException e) {
+            return "admin/product_list";
+        }
     }
 
 }

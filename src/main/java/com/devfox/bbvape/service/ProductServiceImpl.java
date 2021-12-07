@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,5 +31,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> readProductsAsType(String type) {
         return productRepository.findByType(type);
+    }
+
+    @Override
+    public Optional<Product> readProduct(long id) {
+        return productRepository.findById(id);
     }
 }

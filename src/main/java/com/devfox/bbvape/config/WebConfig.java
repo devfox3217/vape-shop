@@ -13,5 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:/var/boot/bbvape/upload/thumbnail/");
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:/var/boot/bbvape/upload/img/");
+        registry.addResourceHandler("/setting/**")
+                .addResourceLocations("file:/var/boot/bbvape/upload/setting/");
     }
 }

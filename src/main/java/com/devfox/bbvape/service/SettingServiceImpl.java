@@ -18,6 +18,7 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public Setting saveSetting(Setting setting) {
+        setting.setId(1);
         return settingRepository.save(setting);
     }
 
